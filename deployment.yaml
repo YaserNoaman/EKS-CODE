@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-pod
+  template:
+    metadata:
+      labels:
+        app: sample-pod
+    spec:
+      containers:
+        - name: tomcat-container
+          image: 943927318769.dkr.ecr.us-east-1.amazonaws.com/ecr-image:addressbook-application 
+          ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-app
+spec:
+  type: NodePort
+  ports:
+  -  port: 8080
+     nodePort: 30001
+     protocol: TCP
+  selector:
+    app: sample-pod
+
